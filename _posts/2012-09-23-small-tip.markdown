@@ -1,0 +1,10 @@
+---
+layout: post
+title: Small tip
+date: 2012-09-23 12:05:24.000000000 -04:00
+categories: []
+tags:
+- linux
+type: post
+---
+Something to remember, if a service isn't working right, check to see how much disk space is left, if it is zero, then that could be the cause of the issue.

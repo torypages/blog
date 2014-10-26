@@ -1,0 +1,14 @@
+---
+layout: post
+title: 'vesamenu.c32: not a COM32R image'
+date: 2011-05-19 14:51:45.000000000 -04:00
+categories: []
+tags: []
+type: post
+---
+Some problems I had while creating an Ubuntu 10.04.2 Server usb drive from Ubuntu 11.04 Desktop
+{% highlight text %}Unknown keyword in configuration file: gfxboot
+vesamenu.c32: not a COM32R image
+boot:{% endhighlight %}
+The fix can be found here <a href="https://bugs.launchpad.net/ubuntu/+source/syslinux/+bug/617779/comments/7">https://bugs.launchpad.net/ubuntu/+source/syslinux/+bug/617779/comments/7</a>
+<a rel="attachment wp-att-792" href="http://www.torypages.com/blog/?attachment_id=792"><img class="alignnone size-medium wp-image-792" title="2011-05-19_13-15-53_762" src="assets/2011-05-19_13-15-53_762-300x225.jpg" alt="" width="300" height="225" /></a>

@@ -1,0 +1,150 @@
+---
+layout: post
+title: Code Snippets for FB Delete
+date: 2012-09-30 17:37:53.000000000 -04:00
+categories: []
+tags:
+- activity log
+- bot
+- delete
+- facebook
+- javascript
+- posts
+- wall
+type: post
+---
+I used the code below to delete items from my activity log on Facebook which were mixed in with items that were not able to be deleted. It is an improvement on <a href="http://www.torypages.com/blog/?p=1165">http://www.torypages.com/blog/?p=1165</a> because it doesn't depend on all items being deletable. The code contained in the link I just provided only deletes whatever item is at the top of the log, thus rendering it useless if the item at the top of the log is not deletable. The code below instead traverses down the Facebook activity log instead of taking whatever is at the top. You could even adjust the "myCounter" variable and skip over the first n activity log entries allowing you to only delete older items.
+
+The catch blocks are probably entirely rubbish, I have no idea what they do if anything, but I don't have time to test them, or perfect them, all I know is that the following code helped me greatly. Hopefully someone else will take the ideas and run with them.
+{% highlight javascript %}var to1, to2, to3, to4, to5;
+var myCounter = -1;
+function myStart(){
+    myCounter = myCounter + 1;
+    task1();
+}
+function task1(){
+    try {
+        //alert(myCounter);
+        myName = 'toryUnique' + myCounter;
+        //alert(myName);
+        $jq('a[ajaxify*="show_story_options"]:eq(' + myCounter + ')').attr('id', myName);
+        document.getElementById(myName).click();
+   } catch (err) {
+        window.clearTimeout(to1); //no idea if these are needed
+        window.clearTimeout(to2);
+        window.clearTimeout(to3);
+        window.clearTimeout(to4); // something dint' work right, just
+        window.clearTimeout(to5); // start over. If something didn't
+        myStart();                // work right it is probably because
+        return;                   // a delay was too short
+    }
+    to1 = window.setTimeout(function(){
+        task2();
+    }, 1000); //800 millisecond delay
+}
+function task2(){
+    try {
+   // alert('test');
+       myOtherName = 'toryOtherUnique' + myCounter;
+        $jq("span:contains(Delete):last").parent().attr('id', myOtherName);
+        document.getElementById(myOtherName).click();
+        myOtherOtherName = 'toryOtherOtherUnique' + myCounter;
+        $jq("a:contains(Delete)").attr('id', myOtherOtherName);
+    } catch (err) {
+        window.clearTimeout(to1);
+        window.clearTimeout(to2);
+        window.clearTimeout(to3);
+        window.clearTimeout(to4);
+        window.clearTimeout(to5);
+        myStart();
+        return;
+    }
+    to2 = window.setTimeout(function(){
+        task3();
+    }, 1000);
+}
+function task3(){
+    try {
+        myOtherOtherName = 'toryOtherOtherUnique' + myCounter;
+        document.getElementById(myOtherOtherName).click();
+    } catch (err) {
+        window.clearTimeout(to1);
+        window.clearTimeout(to2);
+        window.clearTimeout(to3);
+        window.clearTimeout(to4);
+        window.clearTimeout(to5);
+        myStart();
+        return;
+    }
+    to3 =  window.setTimeout(function(){
+        task4();
+    }, 400);
+}
+function task4(){
+    try {
+        superUniqueTory = "superUniqueTory" + myCounter
+        $jq('input[value="Delete"]').attr('id', superUniqueTory);
+    document.getElementById(superUniqueTory).click();
+    } catch (err) {
+        window.clearTimeout(to1);
+        window.clearTimeout(to2);
+        window.clearTimeout(to3);
+        window.clearTimeout(to4);
+        window.clearTimeout(to5);
+        myStart();
+        return;
+    }
+    to4 = window.setTimeout(function(){
+        myStart();
+    }, 2000);
+}
+myStart();{% endhighlight %}
+The following code works in much the same way as above, but this code will hide the items from your timeline instead of deleting them. Ideally the code above, and the code below would be combined into one.
+{% highlight javascript %}var to1, to2;
+var myCounter = -1;
+function myStart(){
+    myCounter = myCounter + 1;
+    task1();
+}
+function task1(){
+    try {
+        //alert(myCounter);
+        myName = 'toryUnique' + myCounter;
+        //alert(myName);
+        $jq('a[ajaxify*="show_story_options"]:eq(' + myCounter + ')').attr('id', myName);
+        document.getElementById(myName).click();
+   } catch (err) {
+        window.clearTimeout(to1); //no idea if these are needed
+        window.clearTimeout(to2);
+        //window.clearTimeout(to3);
+        //window.clearTimeout(to4); // something dint' work right, just
+        //window.clearTimeout(to5); // start over. If something didn't
+        //myStart();                // work right it is probably because
+        return;                   // a delay was too short
+    }
+    to1 = window.setTimeout(function(){
+        task2();
+    }, 1000); //800 millisecond delay
+}
+function task2(){
+    try {
+   // alert('test');
+       myOtherName = 'toryOtherUnique' + myCounter;
+        $jq("span:contains(Hidden from timeline):last").parent().attr('id', myOtherName);
+        document.getElementById(myOtherName).click();
+    } catch (err) {
+        window.clearTimeout(to1);
+        window.clearTimeout(to2);
+        //window.clearTimeout(to3);
+        //window.clearTimeout(to4);
+        //window.clearTimeout(to5);
+        //myStart();
+        return;
+    }
+    to2 = window.setTimeout(function(){
+        myStart();
+    }, 1000);
+}
+myStart();
+{% endhighlight %}
+As I noted here <a href="http://www.torypages.com/blog/?p=1165">http://www.torypages.com/blog/?p=1165</a> Javascript confuses me, I'm mearely trying to scratch my own itch here, I have no interest or time to perfect this, just needed to get it done even if in a very sloppy way. I'm simply posting to spark other people's imaginations. It took my a long time to even figure out that Javascript in the browser's Javascript console would be a way of doing this. But my code here makes for proof of concept. Ideally this would be implemented in a Greasemonkey script I suppose.

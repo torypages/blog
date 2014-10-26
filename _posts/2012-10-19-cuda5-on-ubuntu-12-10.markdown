@@ -1,0 +1,39 @@
+---
+layout: post
+title: Cuda5 on Ubuntu 12.10
+date: 2012-10-19 17:50:52.000000000 -04:00
+categories: []
+tags: []
+type: post
+---
+To install Cuda5 on Ubuntu 12.10 I needed to do a few extra things. Below are the steps I took, there are improvements I suspect what could be made, but I will present instead what worked for me. If I were to do it again I suspect I would do it slightly more efficiently. I did this for the purposes of using <a href="http://boinc.berkeley.edu/" target="_blank">Boinc</a>, and used Boinc to test that it works. I was not able to install the samples but this seems to not be an issue.
+<ol>
+<li>I downloaded the Ubuntu 11.10 64bit installer from here <a href="http://developer.nvidia.com/cuda/cuda-downloads">http://developer.nvidia.com/cuda/cuda-downloads</a></li>
+<li>I moved the file to /root/ because my home folder is encrypted</li>
+<li>I restarted into recovery mode</li>
+<li>dropped to root shell</li>
+<li>I ran # mount -n -o remount,rw /</li>
+<li>moved to /root/ directory</li>
+<li>gave the downloaded file execute permissions</li>
+<li>I ran the file</li>
+<li>Only the driver installation succeeded, the other two, the SDK and the samples failed</li>
+<li>I rebooted my computer normally</li>
+<li>I installed gcc-4.6 (apt-get install gcc-4.6)</li>
+<li>changed directory to /usr/bin</li>
+<li>removed gcc (it's a symbolic link to gcc-4.7)</li>
+<li>created a symbolic link to gcc-4.6 (ln -s gcc-4.6 gcc)</li>
+<li>changed directory to /root/ and re-ran the downloaded file, only selecting yes to the SDK and samples</li>
+<li>The SDK succeeded, but the samples failed</li>
+<li>I was not able to get the samples to work, in my random attempts to fix this I tried to install: libglut-dev,  libglew-dev and freeglut3-dev. I don't think these did anything, I can't even remember if all of them exist, I am just including this for completeness.</li>
+<li>I restarted my system</li>
+<li>I ran
+<ul>
+<li>$ export LD_LIBRARY_PATH=/usr/local/cuda-5.0/lib:$LD_LIBRARY_PATH</li>
+<li>$ export LD_LIBRARY_PATH=/usr/local/cuda-5.0/lib:$LD_LIBRARY_PATH</li>
+</ul>
+</li>
+<li>Then for my own tastes, I restarted boinc (# /etc/init.d/boinc-client restart)</li>
+<li>And Boinc was able to take advantage of the Cuda abilities, hence, it worked despite not getting the samples installed.</li>
+<li>I will still need to add the export commands to ~/.bash_profile or something similar. I say something similar because /etc/init.d/boinc-client seems to run before ~/.bash_profile and thus doing this requires you to restart boinc after startup. This however, is something for my to do list.</li>
+<li>Lastly, I recreated the symbolic link in /usr/bin to gcc-4.7</li>
+</ol>

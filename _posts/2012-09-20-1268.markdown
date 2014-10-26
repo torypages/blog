@@ -1,0 +1,42 @@
+---
+layout: post
+title: Hide Facebook Posts based on Content in Chrome
+date: 2012-09-20 18:56:13.000000000 -04:00
+categories:
+- tech
+tags:
+- chrome
+- facebook
+- javasript
+- JQuery
+- JS
+- tampermonkey
+type: post
+---
+This Tampermonkey script allows you to hide Facebook posts based on their content.
+{% highlight javascript %}// ==UserScript==
+// @name         Facebook Sanity
+// @description  hide facebook posts containing sepecific words / phrases
+// @match        *facebook.com*
+// @require      http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js
+// ==/UserScript==
+myContainer(document.body);
+document.body.addEventListener('DOMNodeInserted', function(event) {
+	myContainer();
+}, false);
+// The reason for using a function like this is to call this script again
+// during subsequent AJAX requests by Facebook
+function myContainer() {
+    // if adding or removing, follow the format below, some characters need
+    // to be preceded by backslashes, definitely ellipses
+    var myList=["Occupy Monsanto","Im here to offend \(18+\)",
+                 "StreetArt in Germany", "Fascinating Places",
+                 "Illuminati Exposed Media", "The Peoples Boycott"];
+    for (var i = 0; i < myList.length; i++) {
+        // entirely remove the post
+        //$("li:contains("+myList[i]+")").css("display", "none");
+        // replace the post with text saying that it was deleted
+        $("li:contains("+myList[i]+")").html("deleted");
+    }
+}{% endhighlight %}
+Update: This does seem to result in a performance hit.

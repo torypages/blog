@@ -1,0 +1,13 @@
+---
+layout: post
+title:  "Change/rename extension for every file in a folder"
+date:   2014-10-26 10:11:00
+categories: bash linux 
+---
+
+Here I go from .html to .markdown
+
+{% highlight bash %}
+for i in `ls *.html`; do file_name=`echo $i | sed 's/\.[^.]*$//'`; \
+mv $file_name.html $file_name.markdown; done;
+{% endhighlight %}
