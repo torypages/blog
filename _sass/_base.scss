@@ -160,6 +160,12 @@ code {
     color: white;
 }
 
+p {
+    code {
+        color: black;
+    }
+}
+
 pre {
     padding: 8px 12px;
     overflow-x: auto;
