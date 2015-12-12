@@ -32,6 +32,7 @@ make dist
 ```
 
 Somewhere in all the output from those commands you will see something similar to:
+
 ```
 APACHE_SPARK_VERSION=1.5.1
 ```
@@ -40,13 +41,13 @@ Go to http://spark.apache.org/downloads.html and download the Spark version matc
 
 Extract:
 
-```
+```bash
 tar xvzf spark-1.5.1-bin-hadoop2.6.tgz
 ```
 
-Personally I like to have a Spark server that continuously with standalone mode as it is better for viewing historical jobs through the web interface, so, start it up"
+Personally I like to have a Spark server that runs continuously with standalone mode as it is better for viewing historical jobs through the web interface, so, start it up:
 
-```
+```bash
 sudo spark-1.5.1-bin-hadoop2.6/sbin/start-all.sh
 ```
 
@@ -68,38 +69,38 @@ Is the sshd service running?
 
 ```bash
 # service ssh status
-sshd: unrecognized service
+ssh: unrecognized service
 ```
 
 Negative, lets install
 
-```
+```bash
 # apt-get install openss-server
 ```
 
-Config that stuff. First, allow logging in with root
+Config that stuff. First, allow logging in with root:
 
-```
+```bash
 # sed -e "s/PermitRootLogin/PermitRootLogin\ yes/" /etc/ssh/sshd_config > /etc/ssh/sshd_config.tmp
 # cp /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config
 ```
 
-Disable password login since we just did something dangerous
+Disable password login since we just did something dangerous:
 
-```
+```bash
 # sed -e "s/.*PasswordAuthentication.*/PasswordAuthentication no/" /etc/ssh/sshd_config > /etc/ssh/sshd_config.tmp
 # cp /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config
 ```
 
 Just to be double sure, I will do what I _think_ only allows root from localhost to SSH into the box, I'm not 100% sure about this, but here it is:
 
-```
+```bash
 # echo "AllowUsers root@localhost" >>  /etc/ssh/sshd_config
 ```
 
-Restart sshd and check status
+Restart sshd and check status:
 
-```
+```bash
 # service ssh restart
 ssh stop/waiting
 ssh start/running, process 6109
@@ -109,13 +110,13 @@ ssh start/running, process 6109
 
 Make keys (press enter until it stops asking you questions):
 
-```
+```bash
 # ssh-keygen
 ```
 
-Make the new key authorized
+Make the new key authorized:
 
-```
+```bash
 # cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
@@ -129,6 +130,7 @@ Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
 hi
 ```
+
 If it says 'hi' you are good. Back to spark.
 
 Try and start the Spark server again:
@@ -137,7 +139,8 @@ Try and start the Spark server again:
 ```bash
 # ./spark-1.5.1-bin-hadoop2.6/sbin/start-all.sh
 starting org.apache.spark.deploy.master.Master, logging to /home/tory/spark-1.5.1-bin-hadoop2.6/sbin/../logs/spark-root-org.apache.spark.deploy.master.Master-1-tory-VirtualBox.out
-localhost: starting org.apache.spark.deploy.worker.Worker, logging to /home/tory/spark-1.5.1-bin-hadoop2.6/sbin/../logs/spark-root-org.apache.spark.deploy.worker.Worker-1-tory-VirtualBox.out````
+localhost: starting org.apache.spark.deploy.worker.Worker, logging to /home/tory/spark-1.5.1-bin-hadoop2.6/sbin/../logs/spark-root-org.apache.spark.deploy.worker.Worker-1-tory-VirtualBox.out
+````
 
 Go to
 
@@ -160,9 +163,9 @@ and you should see something like:
 
 Do make sure there is an alive worker.
 
-Install Jupyter
+Install Jupyter:
 
-```
+```bash
 # pip3 install jupyter
 The program 'pip3' is currently not installed. You can install it by typing:
 # apt-get install python3-pip
@@ -177,6 +180,7 @@ Woops try this again:
 Back to non-root user, install Spark kernel we built earlier:
 
 (I Ran this, don't think it was needd, but in case it was, here it is.)
+
 ```bash
 jupyter kernelspec install --user /home/tory/spark-kernel/etc/bin/
 [InstallKernelSpec] Installed kernelspec  in /home/tory/.local/share/jupyter/kernels/
@@ -184,12 +188,13 @@ jupyter kernelspec install --user /home/tory/spark-kernel/etc/bin/
 
 Set your Jupyter Dir:
 
-```
+```bash
 export JUPYTER_DATA_DIR=~/.jupyter
 ```
 
 Create folder
-```
+
+```bash
 mkdir -p  $JUPYTER_DATA_DIR/kernels/spark
 ```
 
@@ -213,9 +218,9 @@ Open/create file at `$JUPYTER_DATA_DIR/kernels/spark/kernel.json` with contents:
 
 Careful to modify the kernel path to your environment, same with the `SPARK_OPTS` you can get this address from the earlier webpage at http://localhost:8080/
 
-Then start your jupiter notebook:
+Then start your Jupiter notebook:
 
-```
+```bash
 jupyter notebook
 ```
 
@@ -234,9 +239,9 @@ Lets look at the terminal
 SPARK_HOME must be set to the location of a Spark distribution!
 ```
 
-Riiiiighhhhh, lets fix that:
+Riiiiighhhhht, lets fix that:
 
-```
+```bash
 export SPARK_HOME=/home/tory/spark-1.5.1-bin-hadoop2.6/
 ```
 
