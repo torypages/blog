@@ -17,6 +17,7 @@ Performed on fresh Ubuntu 14.04 install.
 First, make sure you have Java and SBT installed.
 
 http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html
+
 http://www.scala-sbt.org/download.html
 
 ```bash
