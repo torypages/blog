@@ -62,6 +62,8 @@ localhost: ssh: connect to host localhost port 22: Connection refused
 
 Woops, I forgot that the root user needs to be able to SSH into localhost without a password. So lets set that up. First, become root, there is lots of root stuff:
 
+(In hindisght, I wonder if I could do this without root, maybe.)
+
 ```bash
 sudo su
 ```
